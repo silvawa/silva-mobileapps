@@ -1,26 +1,76 @@
 package com.example.silvatodolist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
  
 
 public class MainActivity extends Activity {
+	
+	private ListView listViewTasks;
+	private List <Task> tasks;
+	private ToDoList toDoList;
+	
+	
 	public Button buttonAddToDo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		tasks = new ArrayList<Task>(0);
+		toDoList = new ToDoList (this);
+		
+		listViewTasks = (ListView)findViewById(R.id.listViewTasks);
+		
+		populateListViewTasks();
+		
+		listViewTasks.setOnItemClickListener(listViewListener);
+		
 		buttonAddToDo=(Button)findViewById(R.id.buttonAddToDo);
 		
 		
 	}
+	private void populateListViewTasks() {
+		//Create a List of Strings
+		
+		List <String> taskStrings = new ArrayList<String>(0);
+		
+		tasks = toDoList.getAllTasks();
+		
+		for (int i=0, i<tasks.size(); i++) {
+			taskStrings.add(tasks.get(i).toString());
+			
+		}
+		ArrayAdapter<String>arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, taskStrings);
+		
+		listViewTasks.setAdapter(arrayAdapter);
+	}
+	private onItemClickListener listViewListener = new OnItemClickListener() {
+		
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+			
+			// Get Task ID of selected Task
+			int taskId = tasks.get(position).getId();
+			// Make Intent
+			goToEditTask(taskId);
+			
+		}
+		
+		
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -39,6 +89,12 @@ public class MainActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	protected void goToEditTask(int id){
+		Intent editTask = new Intent(this, EditTaskActivity.class);
+		editTask.putExtra("com.example.silvatodolist.taskId", id);
+		startActivity(editTask);
+		
 	}
 	// Handle Clicks
 	public void handleClick(View v){
