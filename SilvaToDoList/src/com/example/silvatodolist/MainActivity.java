@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,7 +24,7 @@ public class MainActivity extends Activity {
 	private ToDoList toDoList;
 	
 	
-	public Button buttonAddToDo;
+	private Button buttonAddToDo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ public class MainActivity extends Activity {
 		
 		tasks = toDoList.getAllTasks();
 		
-		for (int i=0, i<tasks.size(); i++) {
+		for (int i=0; i<tasks.size(); i++) {
 			taskStrings.add(tasks.get(i).toString());
 			
 		}
@@ -57,7 +58,7 @@ public class MainActivity extends Activity {
 		
 		listViewTasks.setAdapter(arrayAdapter);
 	}
-	private onItemClickListener listViewListener = new OnItemClickListener() {
+	private OnItemClickListener listViewListener = new OnItemClickListener() {
 		
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -97,7 +98,7 @@ public class MainActivity extends Activity {
 		
 	}
 	// Handle Clicks
-	public void handleClick(View v){
+	public void handleClick(View v) {
 		switch (v.getId()) {
 			case R.id.buttonAddToDo:
 				Intent addTask = new Intent(this, EditTaskActivity.class);

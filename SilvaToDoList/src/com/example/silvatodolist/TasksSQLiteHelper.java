@@ -10,7 +10,7 @@ public class TasksSQLiteHelper extends SQLiteOpenHelper {
 
 
  // Define the Table and Columns 
-	public static final String TABLE_TASKS ="tasks";
+	public static final String TABLE_TASKS = "tasks";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_PRIORITY = "priority";
 	public static final String COLUMN_DATE = "date";
@@ -21,13 +21,13 @@ public class TasksSQLiteHelper extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 1;
 	
 // Database creation SQL statement
-	private static final String DATABASE_CREATE = "create table"
-			+TABLE_TASKS + "("
-			+ COLUMN_ID + "interger primary key autoincrement. "
-			+ COLUMN_PRIORITY + " interger not null, "
+	private static final String DATABASE_CREATE = "create table "
+			+ TABLE_TASKS + "("
+			+ COLUMN_ID + " integer primary key autoincrement, "
+			+ COLUMN_PRIORITY + " integer not null, "
 			+ COLUMN_DATE + " text not null, "
 			+ COLUMN_TASK + " text not null, "
-			+ COLUMN_COMPLETED + " interger not null);";
+			+ COLUMN_COMPLETED + " integer not null);";
 
  
 	

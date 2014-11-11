@@ -31,6 +31,8 @@ public class ToDoList {
  public void deletedTask(Task t) {
 	 tasksDataSource.deleteTask(t);
  }
- 
- 
-} // end class ToDoList
+ public List<Task> getAllTasks() {
+	 toDoList = tasksDataSource.getAllTasks();
+	 return toDoList;
+ }
+ }// end class ToDoList

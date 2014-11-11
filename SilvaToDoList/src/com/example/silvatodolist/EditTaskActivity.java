@@ -33,7 +33,7 @@ public class EditTaskActivity extends Activity {
 		
 		 // Get Order information from the PurchaseActivity
 		Intent intent = getIntent();
-		int taskId = intent.getIntExtra("com.example.silvatodolist.tasksId", 0);
+		int taskId = intent.getIntExtra("com.example.silvatodolist.taskId", 0);
 		if (taskId != 0){
 			populateTaskData(taskId);
 		}
@@ -41,7 +41,7 @@ public class EditTaskActivity extends Activity {
 	}
 private void populateTaskData(int taskId) {
 	// Bind to UI Fields
-	TextView textID= (TextView)findViewById(R.id.textID);
+	TextView textId= (TextView)findViewById(R.id.textId);
 	CheckBox checkPriority = (CheckBox)findViewById(R.id.checkBoxPriority);
 	EditText editDate = (EditText)findViewById(R.id.editDueDate);
 	EditText editTask = (EditText)findViewById(R.id.editTask);
@@ -53,13 +53,81 @@ private void populateTaskData(int taskId) {
 	// Display Data
 	textId.setText(String.valueOf(t.getId()));
 	checkPriority.setChecked(t.getPriority());
-	editDate.setText(t.getData());
+	editDate.setText(t.getDate());
 	editTask.setText(t.getTaskDetails());
 	checkBoxDone.setChecked(t.getCompleted());
 	
 	
 }
 
+private void editTaskData() {
+	// Bind to UI Fields
+	TextView textId = (TextView)findViewById(R.id.textId);
+	CheckBox checkPriority =(CheckBox)findViewById(R.id.checkBoxPriority);
+	EditText editDate = (EditText)findViewById(R.id.editDueDate);
+	EditText editTask = (EditText)findViewById(R.id.editTask);
+	CheckBox checkBoxDone = (CheckBox)findViewById(R.id.checkBoxDone);
+	
+	//Check If Box Has Data
+	if (textId.getText().toString().length() > 0) {
+		int id =  Integer.valueOf(textId.getText().toString());
+		Task t = toDoList.getTask(id);
+		
+		t.setPriority(checkPriority.isChecked());
+		t.setDate(editDate.getText().toString());
+		t.setTask(editTask.getText().toString());
+		t.setCompleted(checkBoxDone.isChecked());
+	
+		toDoList.editTask(t);
+		
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
+		
+	}
+}
+
+private void addToDo(){
+	// Bind to UI Fields
+	TextView textId = (TextView)findViewById(R.id.textId);
+	CheckBox checkPriority =(CheckBox)findViewById(R.id.checkBoxPriority);
+	EditText editDate = (EditText)findViewById(R.id.editDueDate);
+	EditText editTask = (EditText)findViewById(R.id.editTask);
+	CheckBox checkBoxDone = (CheckBox)findViewById(R.id.checkBoxDone);
+	
+	Task t = new Task();
+	
+	// Handle Date Data
+	t.setPriority(checkPriority.isChecked());
+	t.setDate(editDate.getText().toString());
+	t.setTask(editTask.getText().toString());
+	t.setCompleted(checkBoxDone.isChecked());
+	
+	
+	
+	
+	Task newTask = toDoList.createTask(t);
+	
+	// Display the ID of the Task
+	textId.setText(String.valueOf(newTask.getId()));
+	
+	
+}
+
+private void deleteTask(){
+	//Bind to UI Fields
+	
+	TextView textId = (TextView)findViewById(R.id.textId);
+	
+	//Check if box has data:
+	if(textId.getText().toString().length() > 0) {
+		int id = Integer.valueOf(textId.getText().toString());
+		Task t = toDoList.getTask(id);
+		toDoList.deletedTask(t);
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
+	}
+	
+}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,7 +152,7 @@ private void populateTaskData(int taskId) {
 	public void handleClick(View v){
 		switch (v.getId()){
 		case R.id.buttonAddTask:
-			askToDo();
+			addToDo();
 			break;
 		case R.id.buttonEditTask:
 			editTaskData();
